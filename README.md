@@ -3,11 +3,11 @@ esp32
 
 This is my first ESP32 project. It is a Apple Homekit compatible switch with a touch sensor button and a wifi configuration manager. 
 
-Connect a touch sensor (or just a wire) to pin D4. The sensor is set to be very sensitive to make it work through a platic 
+Connect a touch sensor (or just a wire) to pin D4. 
 
-You find a new wifi network named "esp32", connect with password "esp32pwd". When you connect to this network a login page will automatically be shown, this is called a captive portal an has been tested on an iPhone. On this login page you find a list of all the wifi networks the ESP32 can receive (only 2.4 GHz). When you click on your network a popup for entering your wifi password will show.
+You find a new wifi network named "esp32", connect with password "esp32pwd". When you connect to this network a login page will automatically be shown, this is called a captive portal and has been tested on an iPhone. On this login page you find a list of all the wifi networks the ESP32 can receive (only 2.4 GHz). When you click on your network a popup for entering your wifi password will show.
 
-After the ESP32 is connected tou your wifi you can add the switch to your home in homekit. Pair with "053-58-197". Now you can control the led on the ESP32board with your phone and with the touch sensor. 
+After the ESP32 is connected to your wifi you can add the switch to your home in homekit. Pair with "053-58-197". Now you can control the led on the ESP32board with your phone and with the touch sensor. 
 
 3 existing projects where combined to create this.
 1) Homekit magic https://github.com/younghyunjo/esp32-homekit.git
