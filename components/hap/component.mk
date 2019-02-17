@@ -8,7 +8,7 @@
 #
 
 COMPONENT_SRCDIRS := src wolfssl/src wolfssl/wolfcrypt/src
-COMPONENT_PRIV_INCLUDEDIRS := wolfssl src
+COMPONENT_PRIV_INCLUDEDIRS := wolfssl src wolfssl/wolfcrypt
 
 HOMEKIT_OBJS := $(patsubst %.c,%.o,$(wildcard $(COMPONENT_PATH)/src/*.c))
 HOMEKIT_OBJS := $(patsubst $(COMPONENT_PATH)/%,%,$(HOMEKIT_OBJS))
@@ -85,6 +85,7 @@ WOLFSSL_SETTINGS =        \
     -DWOLFSSL_STATIC_RSA  \
     -DWOLFSSL_IAR_ARM     \
     -DNDEBUG              \
+	-DWOLFSSL_BASE64_ENCODE \
     -DHAVE_CERTIFICATE_STATUS_REQUEST \
     -DCUSTOM_RAND_GENERATE_SEED=os_get_random
 

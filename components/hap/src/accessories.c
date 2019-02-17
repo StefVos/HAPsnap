@@ -352,6 +352,7 @@ int hap_acc_characteristic_put(struct hap_accessory* a, struct hap_connection* h
     *res_body = NULL;
     *res_body_len = 0;
 
+	cJSON_Delete(root);
     return 0;
 }
 
@@ -372,8 +373,9 @@ int hap_acc_accessories_do(struct hap_accessory* a, char** res_header, int* res_
 
     *res_body = cJSON_PrintUnformatted(attr_accessories_json);
     *res_body_len = strlen(*res_body);
-    free(attr_accessories_json);
-	//cJSON_Delete(attr_accessories_json);
+    //free(attr_accessories_json);
+	cJSON_Delete(attr_accessories_json);
+
 
     *res_header = calloc(1, strlen(header_200_fmt) + 16);
     sprintf(*res_header, header_200_fmt, *res_body_len);

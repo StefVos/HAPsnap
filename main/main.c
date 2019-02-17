@@ -59,7 +59,10 @@ SOFTWARE.
 #define MODEL_NAME  "ESP32_ACC"
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
 
-#define PAIRING_KEY "053-58-197"
+// homekit pairing code
+#define PAIRING_KEY "053-58-197" 
+// needed for homekit qr-code pairing. This field is 4 positions long and can contain capital letters or digits
+#define SETUP_ID "Q007"
 
 #define TOUCH_THRESH_NO_USE   (0)
 #define TOUCH_THRESH_PERCENT  (90)
@@ -74,7 +77,7 @@ static gpio_num_t LED_PORT = GPIO_NUM_2;
 
 static void* a;
 static void* _ev_handle;
-static bool led = 1;
+static bool led = 0;
 
 static TaskHandle_t task_http_server = NULL;
 static TaskHandle_t task_wifi_manager = NULL;
@@ -144,14 +147,15 @@ void initHK()
 		sprintf(accessory_id, "%02X:%02X:%02X:%02X:%02X:%02X", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
 		hap_accessory_callback_t callback;
 		callback.hap_object_init = hap_object_init;
-		a = hap_accessory_register((char*)ACCESSORY_NAME, accessory_id, (char*)PAIRING_KEY, (char*)MANUFACTURER_NAME, HAP_ACCESSORY_CATEGORY_OTHER, 811, 1, NULL, &callback); 
+		a = hap_accessory_register((char*)ACCESSORY_NAME, accessory_id, (char*)PAIRING_KEY, (char*)MANUFACTURER_NAME, HAP_ACCESSORY_CATEGORY_OTHER, 811, 1, NULL, &callback, (char*)SETUP_ID); 
 	}
 }
 
 static void touch_pad_read_task(void *pvParameter)
 {
+	uint16_t value = 0;
     while (1){
-		uint16_t value = 0;
+		
 		touch_pad_read_filtered(0, &value);
 	
 		if (value < s_pad_init_val * TOUCH_THRESH_PERCENT / 100) {
@@ -164,13 +168,24 @@ static void touch_pad_read_task(void *pvParameter)
 			vTaskDelay(200 / portTICK_PERIOD_MS);
 		}
 		else {
-        s_pad_activated = false;
+			s_pad_activated = false;
 		}		
 		vTaskDelay(10 / portTICK_PERIOD_MS);
     }
 }
 
 
+/**
+ * @brief RTOS task that periodically prints the heap memory available.
+ * @note Pure debug information, should not be ever started on production code!
+ */
+void monitoring_task(void *pvParameter)
+{
+	for(;;){
+		printf("free heap: %d\n",esp_get_free_heap_size());
+		vTaskDelay(5000 / portTICK_PERIOD_MS);
+	}
+}
 
 void app_main()
 {
@@ -200,4 +215,7 @@ void app_main()
 	
 	xTaskCreate(&touch_pad_read_task, "touch_pad_read_task", 2048, NULL, 5, NULL);
 	
+#if WIFI_MANAGER_DEBUG
+	xTaskCreatePinnedToCore(&monitoring_task, "monitoring_task", 2048, NULL, 1, NULL, 1);
+#endif
 }

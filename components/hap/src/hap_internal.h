@@ -25,6 +25,7 @@ struct hap_accessory {
     char* name;
     char* vendor;
     int port;
+	char* setup_id;
 
     enum hap_accessory_category category;
     uint32_t config_number;

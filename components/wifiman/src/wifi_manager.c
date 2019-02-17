@@ -102,6 +102,7 @@ const int WIFI_MANAGER_REQUEST_WIFI_SCAN = BIT5;
 /* @brief When set, means a client requested to disconnect from currently connected AP. */
 const int WIFI_MANAGER_REQUEST_WIFI_DISCONNECT = BIT6;
 
+const int WIFI_MANAGER_STA_STARTED = BIT7;
 
 void wifi_manager_scan_async(){
 	xEventGroupSetBits(wifi_manager_event_group, WIFI_MANAGER_REQUEST_WIFI_SCAN);
@@ -355,11 +356,12 @@ esp_err_t wifi_manager_event_handler(void *ctx, system_event_t *event)
 		break;
 
     case SYSTEM_EVENT_STA_START:
+		xEventGroupSetBits(wifi_manager_event_group, WIFI_MANAGER_STA_STARTED);
+		esp_wifi_connect();
         break;
 
 	case SYSTEM_EVENT_STA_GOT_IP:
-        xEventGroupSetBits(wifi_manager_event_group, WIFI_MANAGER_WIFI_CONNECTED_BIT);
-		
+        xEventGroupSetBits(wifi_manager_event_group, WIFI_MANAGER_WIFI_CONNECTED_BIT);		
         break;
 
 	case SYSTEM_EVENT_STA_DISCONNECTED:
@@ -373,10 +375,6 @@ esp_err_t wifi_manager_event_handler(void *ctx, system_event_t *event)
     }
 	return ESP_OK;
 }
-
-
-
-
 
 
 wifi_config_t* wifi_manager_get_wifi_sta_config(){
@@ -598,6 +596,7 @@ void wifi_manager( void * pvParameters ){
 	http_server_set_event_start();
 	captdnsInit();
 
+	wifi_mode_t currentMode;
 
 	EventBits_t uxBits;
 	for(;;){
@@ -645,7 +644,7 @@ void wifi_manager( void * pvParameters ){
 				abort();
 			}
 			
-			wifi_mode_t currentMode;
+			//wifi_mode_t currentMode;
 			esp_wifi_get_mode(&currentMode);
 			if(currentMode == WIFI_MODE_STA){
 				ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_APSTA));
@@ -693,7 +692,7 @@ void wifi_manager( void * pvParameters ){
 					if(uxBits & WIFI_MANAGER_WIFI_CONNECTED_BIT){
 
 					
-						wifi_mode_t currentMode;
+						//wifi_mode_t currentMode;
 						esp_wifi_get_mode(&currentMode);	
 						if(!(uxBits & WIFI_MANAGER_REQUEST_WIFI_SCAN) && wifi_settings.sta_only == 1  &&  currentMode == WIFI_MODE_APSTA && WIFI_MANAGER_WIFI_CONNECTED_BIT){
 							ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));

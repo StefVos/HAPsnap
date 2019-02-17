@@ -424,7 +424,7 @@ void hap_service_and_characteristics_add(void* acc_instance, void* acc_obj,
 }
 
 void* hap_accessory_register(char* name, char* id, char* pincode, char* vendor, enum hap_accessory_category category,
-                        int port, uint32_t config_number, void* callback_arg, hap_accessory_callback_t* callback)
+                        int port, uint32_t config_number, void* callback_arg, hap_accessory_callback_t* callback, char* setup_id)
 {
     if (_hap_desc->nr_accessory != 0) {
         return NULL;
@@ -445,6 +445,7 @@ void* hap_accessory_register(char* name, char* id, char* pincode, char* vendor, 
     a->config_number = config_number;
     a->callback = *callback;
     a->callback_arg = callback_arg;
+    a->setup_id = setup_id;
 
     INIT_LIST_HEAD(&a->connections);
     INIT_LIST_HEAD(&a->attr_accessories);
@@ -452,7 +453,7 @@ void* hap_accessory_register(char* name, char* id, char* pincode, char* vendor, 
     _accessory_ltk_load(a);
     a->iosdevices = iosdevice_pairings_init(a->id);
     a->advertise = advertise_accessory_add(a->name, a->id, a->vendor, a->port, a->config_number, a->category,
-                                           ADVERTISE_ACCESSORY_STATE_NOT_PAIRED);
+                                           ADVERTISE_ACCESSORY_STATE_NOT_PAIRED, a->setup_id);
     a->bind = httpd_bind(port, a);
     _hap_desc->nr_accessory = 1;
 
