@@ -7,7 +7,7 @@ Scan the wifi connect QR code (left image) with the standard iPhone camera app, 
 
 
 
-<div style="display:table;">
+<div style="display: flex;">
   <div>
     <img src="https://github.com/StefVos/HapSnap/blob/master/qrcodeWiFi_2.png" width="200px" />
   </div>
