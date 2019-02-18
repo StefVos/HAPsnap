@@ -5,16 +5,17 @@ Connect a touch sensor (or just a wire) to pin D4.
 
 Scan the wifi connect QR code (left image) with the standard iPhone camera app, or search for a new wifi network named "esp32" and connect with password "esp32pwd". When you connect to this network a login page will automatically be shown, this is called a captive portal and has been tested on an iPhone. On this login page you find a list of all the wifi networks the ESP32 can receive (only 2.4 GHz). When you click on your network a popup for entering your wifi password will show.
 
-<table style="border:none !important;border-collapse:collapse !important;">
-    <tr style="border:none !important;">
-      <td style="border=color:#ffffff !important;">
-        <img src="https://github.com/StefVos/HapSnap/blob/master/qrcodeWiFi_2.png" width="200px" />
-      </td>
-      <td style="border:none;">
-        <img src="https://github.com/StefVos/HapSnap/blob/master/qrcode007.png" width="200px" />
-      </td>
-    </tr>
-</table>
+
+
+<div style="display:table;">
+  <div>
+    <img src="https://github.com/StefVos/HapSnap/blob/master/qrcodeWiFi_2.png" width="200px" />
+  </div>
+  <div>
+    <img src="https://github.com/StefVos/HapSnap/blob/master/qrcode007.png" width="200px" />
+  </div>
+</div>
+
 
 After the ESP32 is connected to your wifi you can add the switch to your home in homekit. Scan the QR pairing code (image on the right) or manualy enter "053-58-197". Now you can control the led on the ESP32board with your phone and with the touch sensor. 
 
