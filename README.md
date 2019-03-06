@@ -1,4 +1,4 @@
-# HabSnap
+# HAPsnap
 This is my first ESP32 project. It is a Apple Homekit compatible switch with a touch sensor button and a wifi configuration manager. 
 
 Connect a touch sensor (or just a wire) to pin D4. 
